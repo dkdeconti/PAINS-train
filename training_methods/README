@@ -1,0 +1,124 @@
+# Derrick DeConti 7/22/2015
+PAINS-train/training_methods
+
+
+###
+#FileHandler.py
+###
+API library for loading SDF, SLN, SMILES, and (custom) WikiSrapedDB file
+types. SDF, SLN, and SMILES formats allow transformation of file objets
+to rdkit MorganFingerprints and rdkit Mol objects.
+WikiSrapedDB creates a list of FileObjects.DrugEffects objects.
+
+
+###
+#FileObjects.py
+###
+API library for creating a DrugEffects object.
+DrugEffects: container for drug name, # side effects, # gene expression
+interactions, and SMILES string
+
+
+###
+#basic_stats_plotting.py
+###
+Loads SLN file of PAINS and SDF file of alternative chemical screen set to
+convert to rdkit MOl and Fingerprints to compare:
+Histograms: pairwise tanimoto similarities within PAINS and within alternative
+chemical screen set.
+Heatmap: broken...
+
+
+###
+#build_promiscuity_index_from_stitch.py
+###
+Takes in a chemical smiles structure with chem id, merges it with the
+interactions file to build a new file with the chemid, smiles and # of
+interactions combined.
+
+
+###
+#butina_clustering_PAINS.py
+###
+rdkit based similarity clustering method for chemcial structures
+
+
+###
+#compress_dsig_file.py
+###
+Deprecated.
+Compresses the total drug interaction file from Aqeel to count the interactions
+and print out to a single file (losing the actual interaction properties
+information.)
+ToDo: debug problem in change in fields middle of file
+
+
+###
+#fda_approved_smiles_wikipedia_scrape.py
+###
+TAkes in Joe's comma-delimited list of FDA approved drugs. Scrapes wikipedia
+for smiles and outputs result as a set of smiles. (small molecule drugs only)
+
+
+###
+#hclust_PAINS.py
+###
+Attempts to use hierarchical clustering on 2048 bit vector fingerprint
+of PAINS (via rdkit) for unsupervised clustering.
+Deprecated: does not perform well with binary values in vector
+
+
+###
+#kmeans_cluster_of_pca_reduction.py
+###
+PCA dimensionality reduction on 2048 bit vector of fingerprints for given SLN
+file (presumably for my PAINS). K-means on PC1 vs PC2 result to break apart
+potential clusters. Recursively runs through number of k clusters to
+potentially find best cluster.
+
+
+###
+#knn_analysis.py
+###
+Train PAINS against a given chemical set to train by knn. Tests and prints out
+specificity, sensitivity, accuracy, F1, FDR for various parameters of knn.
+
+
+###
+#linear_svc_analysis.py
+###
+Train PAINS against a given chemical set to train by linear svc. Currently
+only uses a C=1.0. Cross validation to check.
+
+
+###
+#lregress_predicted_PAINS.py
+###
+Performs a scatterplot of probability of random forest predictor as
+compared to the number of side effects of drug and the number of
+gene expression change effects.
+
+
+###
+#pca_plot_on_fp.py
+###
+principal component analysis of PAINS and PAINs vs control set to see clustering
+of data based on fingerprints.
+
+
+###
+#random_forest_analysis.py
+###
+Given classifiers and data (PAINS and alternative chemcial set) trains
+random forest. Tries multiple different tree length parameters for
+sensitivity, specificity, F1, accuracy,
+
+
+###
+#scrape_wikipedia_for_smiles.py
+###
+TAkes in Aqeel's list of FDA approved drugs with number of side effects
+and number of gene expression change interactions and scrapes wikipedia
+for the smiles string associated witht hat drug. prints info back out to
+stdout
+
