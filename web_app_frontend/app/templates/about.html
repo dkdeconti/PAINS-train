@@ -68,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand">PAINS train</a>
+          <a class="navbar-brand"><b>PAINS train</b></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -86,65 +86,18 @@
 
       <hr class="starter-template">
         <h2>About</h2>
-        <p>PAINS train is an attempt to use machine learning to identify
-          false positives in chemical drug screens caused by pan assay
-          interference compounds (PAINS). The basis for the PAINS classification
-          is a 2010 paper by J.B. Baell<sup><a href="#fn1" id="ref1">1</a></sup>,
-          in which PAINS were empirically derived
-          from a large, diverse chemical screen.<br><br>
-
-          More than 350 PAINS were identified and their structure was encoded in a
-          SYBYL/SLN string. As a sample for the non-PAINS aspect of the
-          training set, a random sampling (4,000 molecules) of chemicals from
-          the ChEMBLdb version 20 was used.<br><br>
-
-          RdKit was used for all SMILES, SDF, and SYBYL/SLN format translation,
-          fingerprinting, and conversion of features to a bit array. A bit array
-          of structural features was created for the training sets. A PCA of
-          the two classifiers (PAINS and ChEMBL) showed a tight clustering of
-          PAINS.<br>
-          <img src="../static/img/pains_vs_chembl-12.png"
-                width="400"></p><br>
-          As a further control, I compared the STITCH version 4.0 chemical
-          database of >82 million unique chemicals (randomly subsampled) to
-          the PAINS set through PCA.<br>
-          <img src="../static/img/pains_vs_stitch-12.png"
-               width="400"><br>
-          I chose a random forest classifier due to the features representation. The
-          features were transformed Morgan fingerprints to a 2,048 length bit
-          vector. As a bit vector, the lack of a continuous variable removes
-          many clustering methods as options. This fact combined with the
-          ambiguity as to the of dependence of points between each other in the
-          vector made a random forest classifier an appropriate method for the
-          classification.<br>
-          <img src="../static/img/rf_training_optimization.png"
-                  width="400"><br>
-          Comparison of the performance of the random forest to knn
-          reinforces the notion that random forest is a better performer.<br>
-          <img src="../static/img/knn_training_optimization.png"
-               width="400"><br><br>
-          I tested the random forest model against
-          a cohort of FDA approved drugs and data regarding the number of
-          side effects and the number of major gene expression changes. This
-          data was obtained from
-          <a href="http://tanlab.ucdenver.edu/DSigDB/DSigDBv1.0/">DSigDB</a>. I
-          compared the probability prediciton of PAINS classification by
-          the rando forest model to both the number of side effects and the
-          number of major identified gene expression changes. There was no
-          correlation with either factor, and no drugs were actually classified
-          as a PAINS. However, above a certain probability of PAINS prediction
-          there were no drugs with a low number of side effects.<br>
-          <img src="../static/img/prob_pains_vs_side_effects.png"
-                  width="300">
-          <img src="../static/img/prob_pains_vs_gene_expression.png"
-               width="300"><br>
-          <hr></hr>
-          <sup id="fn1">1. Baell, J. B., & Holloway, G. a. (2010).
-          New substructure filters for removal of pan assay interference
-          compounds (PAINS) from screening libraries and for their exclusion in
-          bioassays. Journal of Medicinal Chemistry, 53(7), 2719–2740.
-          <a href="http://doi.org/10.1021/jm901137j">doi:
-            10.1021/jm901137j</a></sup>
+        <iframe
+                src="https://www.slideshare.net/slideshow/embed_code/key/ezyz8CpYfdgzmR"
+                width="427" height="356" frameborder="0" marginwidth="0"
+                marginheight="0" scrolling="no"
+                style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;"
+                allowfullscreen> </iframe>
+      <div style="margin-bottom:5px"> <strong>
+        <a href="https://www.slideshare.net/secret/ezyz8CpYfdgzmR"
+           title="Derrick DeConti - PAINS train"
+           target="_blank">Derrick DeConti - PAINS train</a> </strong> from <strong>
+        <a href="http://www.slideshare.net/DerrickDeConti"
+           target="_blank">Derrick DeConti</a></strong> </div>
       </div>
 
 

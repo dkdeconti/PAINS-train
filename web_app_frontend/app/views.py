@@ -36,6 +36,7 @@ def smile_input():
 @app.route('/output')
 def smile_output():
     smile_str = request.args.get("smile_str")
+    smile_str = str(smile_str)
     rf = pickle.load(open("static/rf_n300.p", "rb"))
     try:
         mol = MolFromSmiles(smile_str)
@@ -82,6 +83,5 @@ def error_output():
     return render_template("error.html")
 
 
-
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
