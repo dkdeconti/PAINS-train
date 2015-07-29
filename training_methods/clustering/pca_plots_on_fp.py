@@ -87,11 +87,11 @@ def main(sa):
     setsix_fp = FileHandler.SdfFile(setsix_filename).get_fingerprint_list()
     smile_fp = FileHandler.SmilesFile(smiles_filename).get_fingerprint_list()
     print "PCA for PAINS vs. Chembl"
-    pvc = pca(sln_fp, sdf_fp, "PAINS vs. Chembl",
-              "PAINS", "Chembl")
+    pvc = pca(sln_fp, sdf_fp, "PAINS vs. ChEMBL",
+              "PAINS", "ChEMBL")
     print "PCA for PAINS vs. Set six"
-    pvb = pca(sln_fp, setsix_fp, "PAINS vs. Chembl set 6",
-              "PAINS", "Chembl.8")
+    pvb = pca(sln_fp, setsix_fp, "PAINS vs. ChEMBL set 5",
+              "PAINS", "ChEMBL.5")
     print "PCA for PAINS vs. STitch"
     pva = pca(sln_fp, smile_fp, "PAINS vs. Stitch",
               "PAINS", "Stitch")
