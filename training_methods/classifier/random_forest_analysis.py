@@ -12,7 +12,8 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 def optimize_rf(target_train, target_test, control_train, control_test):
-    out_list = ["num_trees", "specificity", "sensitivity", "fdr", "acc", "f1"]
+    out_list = ["num_trees", "specificity", "sensitivity", "fdr", "acc", "f1",
+                "precision"]
     print '\t'.join(out_list)
     for i in [1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500,
               1000]:
@@ -62,7 +63,8 @@ def test_rf(target, control, rf):
     fdr = fp/float(tp+fp)
     acc = (tp+tn)/float(p+n)
     f1 = (2*tp)/float(2*tp+fp+fn)
-    out_list = [specificity, sensitivity, fdr, acc, f1]
+    precision = (tp)/float(tp+fp)
+    out_list = [specificity, sensitivity, fdr, acc, f1, precision]
     return out_list
 
 
@@ -101,8 +103,8 @@ def main(sa):
     #              n_est=300, rand_state=1986)
     #pickle.dump(rf, open("rf_n300.p", "wb"))
     #test_rf(pain_test, control_test, rf)
-    control_train = randomly_pick_from_sdf(sdf_filename, 4000)
-    pain_test = sln_fps
+    #control_train = randomly_pick_from_sdf(sdf_filename, 400)
+    #pain_test = sln_fps
     optimize_rf(pain_train, pain_test, control_train, control_test)
 
 

@@ -28,7 +28,8 @@ def parse_smiles(rf, fda_filename):
         except:
             continue
         if rf.predict(fpm)[0] == 1:
-            line_list.append(line)
+            proba = rf.predict_proba(fpm)[0][1]
+            line_list.append(line  + "\t" + str(proba))
     for line in line_list:
         sys.stdout.write(line + "\n")
 

@@ -38,7 +38,7 @@ def pca(target, control, title, name_one, name_two):
                color="red", legend=name_two)
     return HBox(p1, p2)
 
-def pca_no_labels(target):
+def pca_no_labels(target, title="PCA clustering of PAINS", color="blue"):
     np_fps = []
     for fp in target:
         arr = numpy.zeros((1,))
@@ -49,19 +49,19 @@ def pca_no_labels(target):
     np_fps_r = pca.transform(np_fps)
     p3 = figure(x_axis_label="PC1",
                 y_axis_label="PC2",
-                title="PCA clustering of PAINS")
-    p3.scatter(np_fps_r[:, 0], np_fps_r[:, 1], color="blue")
+                title=title)
+    p3.scatter(np_fps_r[:, 0], np_fps_r[:, 1], color=color)
     p4 = figure(x_axis_label="PC2",
                 y_axis_label="PC3",
-                title="PCA clustering of PAINS")
-    p4.scatter(np_fps_r[:, 1], np_fps_r[:, 2], color="blue")
+                title=title)
+    p4.scatter(np_fps_r[:, 1], np_fps_r[:, 2], color=color)
     return HBox(p3, p4)
 
 
-def randomly_pick_from_sdf(sdf_filename):
+def randomly_pick_from_sdf(sdf_filename, max_N):
     sdf_struct = SDMolSupplier(sdf_filename)
     print len(sdf_struct)
-    sdf_struct = random.sample(sdf_struct, 4000)
+    sdf_struct = random.sample(sdf_struct, max_N)
     try:
         mol_list = [m for m in sdf_struct]
     except:
@@ -83,7 +83,7 @@ def main(sa):
     setsix_filename = sa[2]
     smiles_filename = sa[3]
     sln_fp = FileHandler.SlnFile(sln_filename).get_fingerprint_list()
-    sdf_fp = randomly_pick_from_sdf(sdf_filename)
+    sdf_fp = randomly_pick_from_sdf(sdf_filename, 400)
     setsix_fp = FileHandler.SdfFile(setsix_filename).get_fingerprint_list()
     smile_fp = FileHandler.SmilesFile(smiles_filename).get_fingerprint_list()
     print "PCA for PAINS vs. Chembl"
@@ -97,8 +97,10 @@ def main(sa):
               "PAINS", "Stitch")
     print "PCA within PAINS"
     pvp = pca_no_labels(sln_fp)
+    bvb = pca_no_labels(setsix_fp, title="PCA clustering of ChEMBL set 5",
+                        color="red")
     output_file("pca_plots.html")
-    p = VBox(pvc, pvb, pva, pvp)
+    p = VBox(pvc, pvb, pva, pvp, bvb)
     show(p)
 
 if __name__ == "__main__":

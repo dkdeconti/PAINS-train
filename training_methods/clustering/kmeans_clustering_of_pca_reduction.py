@@ -86,12 +86,14 @@ def kmeans_sil_analysis(reduced_pains_fps):
 
 def main(sa):
     pains_filename = sa[0]
+    sdf_filename = sa[1]
     pains_fps = FileHandler.SlnFile(pains_filename).get_fingerprint_list()
-    import pickle
-    pickle.dump(pains_fps, open("pains_fps.p", "wb"))
-    reduced_pains_fps = train_pca(pains_fps)
+    sdf_fps = FileHandler.SdfFile(sdf_filename).get_fingerprint_list()
+
+    reduced_pains_fps = train_pca(pains_fps+sdf_fps)
     #kmeans_predict = train_kmeans(reduced_pains_fps)
     #plot_k_means(kmeans_predict, reduced_pains_fps)
+
     plots = recurr_plots(reduced_pains_fps, 1)
     sil_plot = kmeans_sil_analysis(reduced_pains_fps)
     show(VBox(plots, sil_plot))

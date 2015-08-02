@@ -1,6 +1,7 @@
 __author__ = 'ddeconti'
 
 import FileObjects
+import random
 import re
 import sys
 
@@ -95,6 +96,24 @@ class SdfFile():
         self.fingerprint_list = fp_list
 
     # Getters
+
+    def randomly_pick_from_sdf(self, max_N=4000):
+        sdf_struct = SDMolSupplier(self.filename)
+        print len(sdf_struct)
+        sdf_struct = random.sample(sdf_struct, max_N)
+        try:
+            mol_list = [m for m in sdf_struct]
+        except:
+            sys.stderr.write("Error parsing SDMolSupplier object\n" +
+                             "Error in randomly_pick_from_sdf()\n")
+            sys.exit()
+        fp_list = []
+        for m in mol_list:
+            try:
+                fp_list.append(AllChem.GetMorganFingerprintAsBitVect(m, 2))
+            except:
+                continue
+        return filter(lambda x: x != None, fp_list)
 
     def get_fingerprint_list(self):
         if not self.fingerprint_list:
