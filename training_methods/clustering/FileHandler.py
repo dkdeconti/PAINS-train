@@ -213,9 +213,9 @@ class SmilesFile():
                              "\nError in FileHandler.__init__()\n")
             sys.exit()
         for line in handle:
-            line = line.strip('\n').split('\t')
-            smile_str = line[3]
-            smile_list.append(smile_str)
+            line = line.strip('\n')
+            #smile_str = line[0]
+            smile_list.append(line)
         handle.close()
         self.smile_list = smile_list
         self.mol_list = None

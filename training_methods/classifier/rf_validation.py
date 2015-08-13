@@ -50,6 +50,9 @@ def main(sa):
     rf = pickle.load(open(rf_filename, "rb"))
     pains_fps = FileHandler.SlnFile(pains_filename).get_fingerprint_list()
     test_fps = FileHandler.SdfFile(test_filename).get_fingerprint_list()
+    pains_fps = fill_array(pains_fps)
+    test_fps = fill_array(test_fps)
+
     stat_list = test_rf(fill_array(pains_fps),
                         fill_array(test_fps),
                         rf)

@@ -84,19 +84,56 @@ def kmeans_sil_analysis(reduced_pains_fps):
     return p
 
 
+def plot_intersect(d):
+    color_vector = ["blue", "red", "green", "purple", "orange", "cyan",
+                    "magenta", "yellow", "black"]
+    p = figure(x_axis_label = "PC1",
+               y_axis_label = "PC2")
+    for k in sorted(d.keys()):
+        for v in d[k]:
+            p.scatter(v[0], v[1], color=color_vector[k])
+    output_file("PCA_with_fda_drugs.html")
+    show(p)
+
+
 def main(sa):
     pains_filename = sa[0]
-    sdf_filename = sa[1]
+    fda_filename = sa[1]
+    #sdf_filename = sa[1]
     pains_fps = FileHandler.SlnFile(pains_filename).get_fingerprint_list()
-    sdf_fps = FileHandler.SdfFile(sdf_filename).get_fingerprint_list()
+    fda_fps = FileHandler.SmilesFile(fda_filename).get_fingerprint_list()
+    #sdf_fps = FileHandler.SdfFile(sdf_filename).get_fingerprint_list()
 
-    reduced_pains_fps = train_pca(pains_fps+sdf_fps)
+    #reduced_pains_fps = train_pca(pains_fps+sdf_fps)
+    reduced_pains_fps = train_pca(pains_fps+fda_fps)
+
     #kmeans_predict = train_kmeans(reduced_pains_fps)
     #plot_k_means(kmeans_predict, reduced_pains_fps)
 
-    plots = recurr_plots(reduced_pains_fps, 1)
-    sil_plot = kmeans_sil_analysis(reduced_pains_fps)
-    show(VBox(plots, sil_plot))
+    #plots = recurr_plots(reduced_pains_fps, 1)
+    #sil_plot = kmeans_sil_analysis(reduced_pains_fps)
+    #show(VBox(plots, sil_plot))
+
+    k = train_kmeans(reduced_pains_fps, 8)
+    reduced_fda_fps = reduced_pains_fps[len(pains_fps):]
+    fda_dict = {}
+    for x in reduced_fda_fps[:,0:2]:
+        key = k.predict(x)[0]
+        if key in fda_dict:
+            fda_dict[key] += 1
+        else:
+            fda_dict[key] = 1
+    print fda_dict
+    color_dict = {}
+    for fps in reduced_pains_fps[:len(pains_fps)]:
+        f = list(fps[0:2])
+        clust = k.predict(f)[0]
+        if clust in color_dict:
+            color_dict[clust].append(f)
+        else:
+            color_dict[clust] = [f]
+    color_dict[8] = list([list(x) for x in reduced_fda_fps[:,0:2]])
+    #plot_intersect(color_dict)
 
 
 if __name__ == "__main__":

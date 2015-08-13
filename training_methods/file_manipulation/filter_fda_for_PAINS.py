@@ -15,6 +15,7 @@ def parse_smiles(rf, fda_filename):
         sys.exit()
     fpm_list = []
     line_list = []
+    total = 0
     for line in handle:
         arow = line.strip('\n').split('\t')
         smiles = arow[1]
@@ -27,9 +28,11 @@ def parse_smiles(rf, fda_filename):
             fpm_list.append(fpm)
         except:
             continue
+        total += 1
         if rf.predict(fpm)[0] == 1:
             proba = rf.predict_proba(fpm)[0][1]
-            line_list.append(line  + "\t" + str(proba))
+            line_list.append(line.strip('\n').split()[1])
+    sys.stderr.write(str(total) + "\t" + str(len(line_list)) + "\n")
     for line in line_list:
         sys.stdout.write(line + "\n")
 

@@ -7,20 +7,32 @@ import random
 import sys
 from rdkit.Chem import AllChem, SDMolSupplier
 from rdkit import Chem, DataStructs
-from sklearn.cross_validation import train_test_split, ShuffleSplit
+from sklearn.cross_validation import train_test_split, StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 
 
-def optimize_rf(target_train, target_test, control_train, control_test):
+def optimize_rf(target, control):
     out_list = ["num_trees", "specificity", "sensitivity", "fdr", "acc", "f1",
                 "precision"]
     print '\t'.join(out_list)
+    data_list = target + control
+    label_list = [0]*len(target) + [1]*len(control)
     for i in [1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500,
               1000]:
-        rf = train_rf(target_train, control_train, i, 1986)
-        stat_list = test_rf(target_test, control_test, rf)
-        print '\t'.join(str(j) for j in [i] + stat_list)
-
+        stat_list = []
+        kfold  = StratifiedKFold(label_list, n_folds=5)
+        for train, test in kfold:
+            rf = train_rf([data_list[j] for j in train if label_list[j] == 0],
+                          [data_list[j] for j in train if label_list[j] == 1],
+                          i,
+                          1986)
+            stat_list.append(test_rf([data_list[j] for j in test
+                                      if label_list[j] == 0],
+                                     [data_list[j] for j in test
+                                      if label_list[j] == 1],
+                                     rf))
+        stat_list = numpy.mean(stat_list, axis=0)
+        print '\t'.join(str(s) for s in [i] + list(stat_list))
 
 def train_rf(target, control, n_est, rand_state):
     np_fps = []
@@ -105,7 +117,10 @@ def main(sa):
     #test_rf(pain_test, control_test, rf)
     #control_train = randomly_pick_from_sdf(sdf_filename, 400)
     #pain_test = sln_fps
-    optimize_rf(pain_train, pain_test, control_train, control_test)
+    optimize_rf(pain_train, control_train)
+    rf = train_rf(pain_train, control_train, n_est=300, rand_state=1986)
+    pickle.dum(rf, open("rf_n300.p", "wb"))
+    test_rf(pain_test, control_test, rf)
 
 
 if __name__ == "__main__":
